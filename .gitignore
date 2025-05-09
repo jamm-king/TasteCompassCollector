@@ -1,0 +1,42 @@
+# --- Python virtual environment ---
+venv/
+env/
+.venv/
+
+# --- Python bytecode / Cache file ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Scrapy internal directory ---
+.scrapy/                   # crawlstate 등 내부 캐시
+logs/                      # (로그 디렉토리, 있다면)
+
+# --- Test / Coverage ---
+.coverage
+htmlcov/
+.pytest_cache/
+
+# --- Output file (FEEDS) ---
+*.json
+*.jl
+*.csv
+
+# --- Env value / Secret key ---
+.env
+*.env
+*.properties
+
+# --- IDE / Editor config ---
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Build output / Packging node ---
+dist/
+build/
