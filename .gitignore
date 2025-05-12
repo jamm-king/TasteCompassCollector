@@ -4,7 +4,7 @@ env/
 .venv/
 
 # --- Python bytecode / Cache file ---
-__pycache__/
+*/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -21,6 +21,7 @@ htmlcov/
 *.json
 *.jl
 *.csv
+*/crawls/
 
 # --- Env value / Secret key ---
 .env
