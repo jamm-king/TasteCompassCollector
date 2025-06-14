@@ -11,9 +11,8 @@ class ReviewPipeline:
         payload = {
             "source": item["source"],
             "url": item["url"],
+            "address": item["address"],
             "text": item["text"],
-            "x": item.get("x", 0.0),
-            "y": item.get("y", 0.0)
         }
         try:
             response = requests.post("http://localhost:8080/api/reviews", json=payload)

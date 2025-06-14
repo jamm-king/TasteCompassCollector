@@ -3,15 +3,15 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from utils.io import load_keywords_from_file
-from spiders.naver_blog_spider import NaverBlogSpider
+from TasteCompassCollector.utils.io import load_keywords_from_file
+from TasteCompassCollector.spiders.naver_blog_spider import NaverBlogSpider
 
 
 def run_naver_blog_spider():
-    keywords = load_keywords_from_file("search_keywords.txt")
+    keywords = load_keywords_from_file("TasteCompassCollector/search_keywords.txt")
     process = CrawlerProcess(get_project_settings())
 
-    process.crawl(NaverBlogSpider, keywords=keywords)
+    process.crawl(NaverBlogSpider, keywords=["포항시 맛집"])
     process.start()
 
 

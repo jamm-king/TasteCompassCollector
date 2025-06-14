@@ -115,3 +115,6 @@ PROXY_LIST = [
     # 'http://proxy1.example.com:8000',
     # 'http://proxy2.example.com:8000',
 ]
+
+# Log
+LOG_LEVEL = 'INFO'

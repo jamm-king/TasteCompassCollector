@@ -12,9 +12,9 @@ from TasteCompassCollector.items.review_item import ReviewItem
 
 class NaverBlogSpider(scrapy.Spider):
     name = "naver_blog"
-    custom_settings = {
-        'JOBDIR': f'crawls/{name}-job',
-    }
+    # custom_settings = {
+    #     'JOBDIR': f'crawls/{name}-job',
+    # }
 
     BLOG_POST_URL = re.compile(r"https://blog\.naver\.com/[A-Za-z0-9_-]+/\d+")
 
@@ -24,7 +24,6 @@ class NaverBlogSpider(scrapy.Spider):
             raise ValueError("keywords must be provided to NaverBlogSpider")
         self.keywords = keywords
         self.max_pages = int(max_pages)
-        # 통계용 카운터
         self.page_count = 0
         self.post_count = 0
 
@@ -50,7 +49,6 @@ class NaverBlogSpider(scrapy.Spider):
         keyword = response.meta["keyword"]
         page_no = response.meta.get("page", 1)
 
-        # 검색 결과 포스트 링크 추출
         raw_links = response.css("a.desc_inner::attr(href)").getall()
         valid_links = [response.urljoin(link) for link in raw_links
                        if self.BLOG_POST_URL.match(response.urljoin(link))]
@@ -126,6 +124,13 @@ class NaverBlogSpider(scrapy.Spider):
         ).getall()
         item["text"] = "\n".join(p.strip() for p in paragraphs if p.strip())
 
+        address = response.css("p.se-map-address::text").get()
+        item["address"] = address
+
+        self.logger.debug(f"Parsed item: {item}")
+        yield item
+
+    def _extract_position(self, response):
         raw = response.css(
             "div.se-placesMap > script.__se_module_data::attr(data-module)"
         ).get()
@@ -138,15 +143,12 @@ class NaverBlogSpider(scrapy.Spider):
                     place = places[0]
                     lat = place.get("latlng", {}).get("latitude")
                     lng = place.get("latlng", {}).get("longitude")
-                    item["x"] = lng
-                    item["y"] = lat
+
+                    return lng, lat
             except json.JSONDecodeError:
                 self.logger.warning(
                     f"Failed to parse location data on post: {response.url}"
                 )
-
-        self.logger.debug(f"Parsed item: {item}")
-        yield item
 
     def closed(self, reason):
         self.logger.info(
